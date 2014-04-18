@@ -1,0 +1,10 @@
+{application, gen_node,
+ [
+  {description, "general computing node"},
+  {vsn, "0.0.1"},
+  {registered, []},
+  {applications, [kernel,
+                  stdlib]},
+  {mod, {gen_node, []}},
+  {env, []}
+ ]}.
