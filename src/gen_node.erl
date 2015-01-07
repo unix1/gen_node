@@ -1,6 +1,7 @@
 -module(gen_node).
 -export([start/2, stop/1]).
--export([start_server/0, start_server/1, stop_server/1, become/2, reset/1, send/2]).
+-export([start_server/0, start_server/1, stop_server/1]).
+-export([become/2, get_state/1, reset/1, send/2]).
 -behaviour(application).
 
 %%%%% Admin API %%%%%
@@ -23,6 +24,9 @@ stop_server(Name) ->
 
 become(N, F) ->
     gen_node_server:become(N, F).
+
+get_state(N) ->
+    gen_node_server:get_state(N).
 
 reset(N) ->
     gen_node_server:reset(N).
