@@ -1,6 +1,8 @@
 -module(gen_node_server_sup).
--export([start_link/0, init/1, start_server/0, start_server/1, stop_server/1]).
+
 -behaviour(supervisor).
+
+-export([start_link/0, init/1, start_server/0, start_server/1, stop_server/1]).
 
 -define(CHILD(Id), {Id, % child id
         {gen_node_server, start_link, [self()]},

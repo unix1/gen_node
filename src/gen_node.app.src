@@ -1,7 +1,8 @@
 {application, gen_node,
  [
   {description, "general computing node"},
-  {vsn, "0.0.1"},
+  {vsn, "0.1.0"},
+  {modules, []},
   {registered, []},
   {applications, [kernel,
                   stdlib]},

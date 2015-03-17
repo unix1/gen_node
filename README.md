@@ -12,8 +12,8 @@ Compile and Run
 ===============
 
 ````
-rebar compile
-erl -pa ebin/
+make
+_rel/gen_node_release/bin/gen_node_release console
 ````
 
 Example
@@ -24,20 +24,24 @@ Example
 #Fun<erl_eval.44.106461118>
 2> Square = fun Square() -> receive {_, reset} -> ok; {From, Args} -> From ! Args*Args, Square() end end.
 #Fun<erl_eval.44.106461118>
-3> application:start(gen_node).
-ok
-4> {ok, N, _} = gen_node:start_server().
+3> {ok, N, _} = gen_node:start_server().
 {ok,<0.42.0>,#Ref<0.0.0.45>}
-5> gen_node:become(N, Double).
+4> gen_node:become(N, Double).
 ok
-6> gen_node:send(N, 16).
-32
+5> gen_node:send(N, 16).
+ok
+6> flush().
+Shell got 32
+ok
 7> gen_node:reset(N).
 ok
 8> gen_node:become(N, Square).
 ok
 9> gen_node:send(N, 16).
-256
+ok
+10> flush().
+Shell got 256
+ok
 ````
 
 More Info
