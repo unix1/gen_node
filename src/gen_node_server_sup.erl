@@ -11,6 +11,8 @@
         worker,
         [gen_node_server]}).
 
+%%%%% Supervision functions %%%%%
+
 start_link() ->
     supervisor:start_link({local, ?MODULE}, ?MODULE, []).
 
@@ -18,6 +20,8 @@ init([]) ->
     MaxRestart = 1,
     MaxTime = 3600,
     {ok, {{one_for_one, MaxRestart, MaxTime}, []}}.
+
+%%%%% User functions %%%%%
 
 start_server() ->
     ChildId = make_ref(),
