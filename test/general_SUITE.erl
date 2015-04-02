@@ -12,7 +12,9 @@
 %% Tests
 -export([gen_node_server_start/1]).
 -export([gen_node_server_state_after_start/1]).
+-export([gen_node_server_state_after_work/1]).
 -export([gen_node_server_state_during_work/1]).
+-export([gen_node_server_states/1]).
 -export([gen_node_server_work/1]).
 
 %% ============================================================================
@@ -24,7 +26,9 @@ all() ->
         gen_node_server_start,
         gen_node_server_state_after_start,
         gen_node_server_state_during_work,
-        gen_node_server_work
+        gen_node_server_work,
+        gen_node_server_state_after_work,
+        gen_node_server_states
     ].
 
 init_per_suite(Config) ->
@@ -83,3 +87,11 @@ gen_node_server_state_after_work(_) ->
     ok = gen_node:become(ChildId, double_fun()),
     ok = gen_node:reset(ChildId),
     #{state := ready} = gen_node:get_state(ChildId).
+
+gen_node_server_states(_) ->
+    {ok, ChildId1, _ChildRef1} = gen_node:start_server(),
+    {ok, ChildId2, _ChildRef2} = gen_node:start_server(),
+    ok = gen_node:become(ChildId2, double_fun()),
+    States = gen_node:get_states(),
+    {ChildId1, #{state := ready}} = lists:keyfind(ChildId1, 1, States),
+    {ChildId2, #{state := working}} = lists:keyfind(ChildId2, 1, States).
