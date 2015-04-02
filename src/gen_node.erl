@@ -4,7 +4,7 @@
 
 -export([start/2, stop/1]).
 -export([start_server/0, start_server/1, stop_server/1]).
--export([become/2, get_state/1, reset/1, send/2]).
+-export([become/2, get_state/1, get_states/0, reset/1, send/2]).
 
 -type gen_node_ref() :: tuple(ok, pid(), reference()).
 -type stop_server() :: ok | tuple(error, running | restarting | not_found
@@ -48,6 +48,19 @@ become(Name, Fun) ->
 -spec get_state(Name :: pid()) -> worker_state().
 get_state(Name) ->
     gen_node_server:get_state(Name).
+
+%% @doc Gets PIDs and states of all workers.
+-spec get_states() -> list(worker_state()).
+get_states() ->
+    lists:foldl(
+        fun(Pid, Acc) -> [{Pid, get_state(Pid)}|Acc] end,
+        [],
+        lists:foldl(
+            fun({_Ref, Pid, worker, _Mods}, Acc) -> [Pid|Acc] end,
+            [],
+            supervisor:which_children(gen_node_server_sup)
+        )
+    ).
 
 %% @doc Sends a reset message to the worker.
 %% NOTE Worker function must accept a reset message `{FromPid, reset}`
