@@ -1,12 +1,21 @@
 General Computing Node
 ======================
 
-`gen_node` is a concept code for a generic computing node server implemented in Erlang. It is based on a modified version of Joe Armstrong's Universal Server. It uses a `gen_server` behavior to wrap around its functionality.
+`gen_node` is a concept code for a generic computing node server implemented in Erlang. It is based on a modified version of Joe Armstrong's Universal Server.
 
 Summary
 =======
 
 User of `gen_node` application can spawn any number of gen_node servers. By default, these processes will wait and do nothing. Once they get instructions on what to do, they'll "become" what they are told.
+
+Internal Implementation
+=======================
+
+Each `gen_node` server is implemented as a process pair.
+
+The first process - the controlling process - is a `gen_server` under the control of the OTP supervisor. This process' main task is to keep track of the status of the "node". It's also used as a gateway for sending the task to the actual worker process.
+
+The second process is the worker process that performs actual tasks and computations. It's linked to the controlling process. Its sole task is to wait for the instructions from the controlling process and perform the task given.
 
 Compile and Run
 ===============
