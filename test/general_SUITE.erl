@@ -58,19 +58,19 @@ double_fun() ->
 %% ============================================================================
 
 gen_node_server_start(_) ->
-    {ok, _ChildId, _ChildRef} = gen_node:start_server().
+    {ok, _ChildId} = gen_node:start_server().
 
 gen_node_server_state_after_start(_) ->
-    {ok, ChildId, _ChildRef} = gen_node:start_server(),
+    {ok, ChildId} = gen_node:start_server(),
     #{state := ready} = gen_node:get_state(ChildId).
 
 gen_node_server_state_during_work(_) ->
-    {ok, ChildId, _ChildRef} = gen_node:start_server(),
+    {ok, ChildId} = gen_node:start_server(),
     ok = gen_node:become(ChildId, double_fun()),
     #{state := working} = gen_node:get_state(ChildId).
 
 gen_node_server_work(_) ->
-    {ok, ChildId, _ChildRef} = gen_node:start_server(),
+    {ok, ChildId} = gen_node:start_server(),
     ok = gen_node:become(ChildId, double_fun()),
     ok = gen_node:send(ChildId, 15),
     ok = receive
@@ -83,14 +83,14 @@ gen_node_server_work(_) ->
     end.
 
 gen_node_server_state_after_work(_) ->
-    {ok, ChildId, _ChildRef} = gen_node:start_server(),
+    {ok, ChildId} = gen_node:start_server(),
     ok = gen_node:become(ChildId, double_fun()),
     ok = gen_node:reset(ChildId),
     #{state := ready} = gen_node:get_state(ChildId).
 
 gen_node_server_states(_) ->
-    {ok, ChildId1, _ChildRef1} = gen_node:start_server(),
-    {ok, ChildId2, _ChildRef2} = gen_node:start_server(),
+    {ok, ChildId1} = gen_node:start_server(),
+    {ok, ChildId2} = gen_node:start_server(),
     ok = gen_node:become(ChildId2, double_fun()),
     States = gen_node:get_states(),
     {ChildId1, #{state := ready}} = lists:keyfind(ChildId1, 1, States),

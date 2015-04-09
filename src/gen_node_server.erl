@@ -2,7 +2,7 @@
 
 -behaviour(gen_server).
 
--export([start_link/1, start_link/2, init/1]).
+-export([start_link/1, init/1]).
 -export([code_change/3, handle_call/3, handle_cast/2, handle_info/2, terminate/2]).
 -export([become/2, done/1, get_state/1, reset/1, send/2]).
 
@@ -13,10 +13,6 @@
 %% Start without name
 start_link(Sup) ->
     gen_server:start_link(?MODULE, {Sup}, []).
-
-%% Start with locally registered name
-start_link(Name, Sup) when is_atom(Name) ->
-    gen_server:start_link({local, Name}, ?MODULE, {Sup}, []).
 
 init({_Sup}) ->
     WorkerPid = spawn_link(gen_node_worker, init, [self()]),
