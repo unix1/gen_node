@@ -17,6 +17,11 @@ The first process - the controlling process - is a `gen_server` under the contro
 
 The second process is the worker process that performs actual tasks and computations. It's linked to the controlling process. Its sole task is to wait for the instructions from the controlling process and perform the task given.
 
+Supervision Tree
+----------------
+
+![gen_node supervision tree](/guide/supervision-tree.png?raw=true)
+
 Compile and Run
 ===============
 
@@ -33,7 +38,7 @@ Example
 #Fun<erl_eval.44.106461118>
 2> Square = fun Square() -> receive {_, reset} -> ok; {From, Args} -> From ! Args*Args, Square() end end.
 #Fun<erl_eval.44.106461118>
-3> {ok, N, _} = gen_node:start_server().
+3> {ok, N} = gen_node:start_server().
 {ok,<0.42.0>,#Ref<0.0.0.45>}
 4> gen_node:become(N, Double).
 ok
