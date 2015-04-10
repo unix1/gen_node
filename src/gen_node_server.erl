@@ -10,7 +10,6 @@
 
 %%%%% Supervision functions %%%%%
 
-%% Start without name
 start_link(Sup) ->
     gen_server:start_link(?MODULE, {Sup}, []).
 
@@ -21,37 +20,37 @@ init({_Sup}) ->
 %%%%% User functions %%%%%
 
 %% @doc Makes the worker become the given `fun`.
--spec become(Name :: pid(), F :: fun()) -> ok.
-become(Name, F) when is_pid(Name), is_function(F, 0) ->
-    ok = gen_server:call(Name, {become, F}).
+-spec become(Pid :: pid(), F :: fun()) -> ok.
+become(Pid, F) when is_pid(Pid), is_function(F, 0) ->
+    ok = gen_server:call(Pid, {become, F}).
 
 %% @doc Gets current PID and state of the worker.
--spec get_state(Name :: pid()) -> worker_state().
-get_state(Name) ->
-    {ok, State} = gen_server:call(Name, {get_state}),
+-spec get_state(Pid :: pid()) -> worker_state().
+get_state(Pid) ->
+    {ok, State} = gen_server:call(Pid, {get_state}),
     State.
 
 %% @doc Sends a reset message to the worker.
 %% NOTE Worker function must accept a reset message `{FromPid, reset}`
--spec reset(Name :: pid()) -> ok.
-reset(Name) ->
-    ok = gen_server:call(Name, {reset}).
+-spec reset(Pid :: pid()) -> ok.
+reset(Pid) ->
+    ok = gen_server:call(Pid, {reset}).
 
 %% @doc Sends arbitrary messages to the worker in the form of `{Pid, Args}`
 %% where `Pid` is the process ID of the caller.
-%% This is not to be confused with `Name` argument which is the Pid of the
+%% This is not to be confused with `Pid` argument which is the Pid of the
 %% `gen_node_server`.
--spec send(Name :: pid(), Args :: any()) -> ok.
-send(Name, Args) ->
-    ok = gen_server:call(Name, {send, Args}).
+-spec send(Pid :: pid(), Args :: any()) -> ok.
+send(Pid, Args) ->
+    ok = gen_server:call(Pid, {send, Args}).
 
 %%%%% Worker functions %%%%%
 
 %% @doc Worker is done, update our status.
 %% This would typically be called by the worker when it completes.
--spec done(Name :: pid()) -> ok.
-done(Name) ->
-    ok = gen_server:call(Name, {done}).
+-spec done(Pid :: pid()) -> ok.
+done(Pid) ->
+    ok = gen_server:call(Pid, {done}).
 
 %%%%% Server functions %%%%%
 
