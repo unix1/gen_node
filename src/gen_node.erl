@@ -6,9 +6,9 @@
 -export([start_server/0, stop_server/1]).
 -export([become/2, get_state/1, get_states/0, reset/1, send/2]).
 
--type gen_node_ref() :: tuple(ok, pid()).
--type stop_server() :: ok | tuple(error, running | restarting | not_found
-    | simple_one_for_one).
+-type gen_node_ref() :: {ok, pid()}.
+-type stop_server() :: ok | {error, running | restarting | not_found
+    | simple_one_for_one}.
 -type worker_state() :: #{state => ready | working, worker => pid()}.
 
 %%%%% Admin API %%%%%

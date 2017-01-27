@@ -23,7 +23,7 @@ init([]) ->
 %%%%% User functions %%%%%
 
 start_server() ->
-    {ok, Pid} = supervisor:start_child(?MODULE, []).
+    {ok, _Pid} = supervisor:start_child(?MODULE, []).
 
 stop_server(Pid) ->
     supervisor:terminate_child(?MODULE, Pid),
