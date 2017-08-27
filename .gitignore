@@ -1,4 +1,4 @@
-.erlang.mk.packages.*
+.erlang.mk
 .eunit
 *.o
 *.beam
@@ -8,5 +8,6 @@ _rel
 deps
 ebin
 erl_crash.dump
+gen_node.d
 logs
 relx
