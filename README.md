@@ -26,8 +26,7 @@ Compile and Run
 ===============
 
 ````
-make
-_rel/gen_node_release/bin/gen_node_release console
+make run
 ````
 
 Example
@@ -62,4 +61,4 @@ More Info
 =========
 
 For now, please find more info in this blog post:
-http://unix0.wordpress.com/2014/04/17/elastic-applications-in-erlang/
+http://unix.net/2014/04/17/elastic-applications-in-erlang/

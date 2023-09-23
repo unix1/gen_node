@@ -1,11 +1,45 @@
-PROJECT = gen_node
+REBAR3 = rebar3
+filter =
 
-# Options
+all:
+	@$(REBAR3) do clean, compile, dialyzer
 
-CT_SUITES = general
+compile:
+	@$(REBAR3) compile
 
-# Dependencies
+cover:
+	@$(REBAR3) ct --cover --cover_export_name=all
+	@$(REBAR3) cover --verbose
 
-# Standard targets
+deps:
+	@$(REBAR3) get-deps
 
-include erlang.mk
+dialyze:
+	@$(REBAR3) dialyzer
+
+doc:
+	@$(REBAR3) edoc
+
+rel: all
+	@$(REBAR3) release
+
+release: set-version
+	git commit -a -m "Update version to $(version)"
+	git tag $(version)
+	git push --atomic origin main $(version)
+
+run:
+	@$(REBAR3) shell
+
+set-version:
+	@sed -i "s/{gen_node, \"[[:digit:]]\+\.[[:digit:]]\+\.[[:digit:]]\+\"}/{gen_node, \"$(version)\"}/" rebar.config
+	@sed -i "s/{vsn, \"[[:digit:]]\+\.[[:digit:]]\+\.[[:digit:]]\+\"}/{vsn, \"$(version)\"}/" src/gen_node.app.src
+
+tests:
+ifeq ($(filter),)
+	@$(REBAR3) ct --logdir logs/ct
+else
+	@$(REBAR3) ct --logdir logs/ct --suite=$(filter)
+endif
+
+.PHONY: all compile cover deps dialyze doc rel release run set-version tests
